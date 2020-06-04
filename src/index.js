@@ -13,7 +13,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-
    const dropDown = document.querySelector('#breed-dropdown')
    dropDown.addEventListener('change', (e) => {
      console.log(e.target.value)
