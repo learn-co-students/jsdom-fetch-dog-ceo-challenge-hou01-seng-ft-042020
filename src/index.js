@@ -1,60 +1,56 @@
 console.log('%c HI', 'color: firebrick')
-// const breeds = [];
-let breedsDog = [];
 
-function fetchDogs(){
-    
-    return fetch ("https://dog.ceo/api/breeds/image/random/4")
-    .then(response => response.json())
-    .then(function(json) {
-        return createImg(json);
-    })
-}
+// <h1>Dog CEO</h1>
 
-function fetchBreeds(){
-    
-    return fetch ("https://dog.ceo/api/breeds/list/all")
-    .then(response => response.json())
-    .then(function(json) {
-        return createBreed(json);
-    })
-}
+// <div id="dog-image-container">
+//   <!-- images here -->
+// </div>
 
-function createImg(imgUrl){
+// <hr>
+// <label for="select-breed">Filter Breeds That Start with:</label>
+// <select id="breed-dropdown" name="select-breed">
+//   <option value="a">a</option>
+//   <option value="b">b</option>
+//   <option value="c">c</option>
+//   <option value="d">d</option>
+// </select>
 
-    for (const element of imgUrl.message){
-        console.log()
-        const getId = document.getElementById('dog-image-container');
-        const ulDogs = document.createElement('ul')
-        const listDogs = document.createElement('li');
-        const img = document.createElement('img');
-        
-        img.setAttribute('src',element);
-        listDogs.append(img)
-        ulDogs.append(listDogs)
-        getId.append(ulDogs)
-        // ulDogs.textContent = ''
-    }
-}
+// <ul id="dog-breeds">
 
-function createBreed(breedList){
-    
-    console.log('Test', breedList.message)
-    const breeds = Object.keys(breedList.message)
-    for (const element of breedList.message){
-        const getId = document.getElementById('dog-image-container');
-        const ulDogs = document.createElement('ul')
-        const listDogs = document.createElement('li');
-        
-        ulDogs.append(listDogs)
-        getId.append(ulDogs)
-        breedsDog = Object.keys(breedList.message)
-        // ulDogs.textContent = `${breeds}`
-    }
-
-}
-
-document.addEventListener('DOMContentLoaded',function(){
-    fetchDogs();
-    fetchBreeds();
+// </ul>
+// 
+const url = 'https://dog.ceo/api/breeds/image/random/4'
+fetch(url)
+.then(res => res.json())
+.then(dogsImg => { 
+  dogsImg.message.forEach(dogImg => {
+    getDog(dogImg)
+  })
 })
+
+function getDog(dogImg){
+  const div = document.querySelector('#dog-image-container')
+  const img = document.createElement('img')
+  img.src = dogImg
+  div.append(img)
+}
+
+fetch('https://dog.ceo/api/breeds/list/all')
+.then(res => res.json())
+.then(breedsObj => {
+  breeds = Object.keys(breedsObj.message)
+  for(const breed of breeds){
+    getBreed(breed)
+  }
+})
+
+function getBreed(breed){
+  const ul = document.querySelector('#dog-breeds')
+  const li = document.createElement('li')
+  li.innerText = breed
+  ul.append(li)
+  li.addEventListener('click',(e) => {
+    e.target.style.color = 'red'
+  })
+}
+
